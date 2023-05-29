@@ -73,9 +73,7 @@ export function SendEthPage(){
         onSuccess(data) {
             console.log('Success', data)
             console.log(data?.hash)
-            const dataToBot = JSON.stringify({hash: data?.hash})
-            tele.sendData(dataToBot);
-            tele.close();
+            
         },
         onError(error) {
             console.log('Error', error)
@@ -94,6 +92,12 @@ export function SendEthPage(){
         
     }
 
+    tele.MainButton.setText("Finish").show().onClick(function(){
+        const set_hash = data?.hash
+        const dataToBot = JSON.stringify({hash: set_hash})
+        tele.sendData(dataToBot);
+        tele.close();
+      });
     return(
         // <form
         //     onSubmit={(e) => {
