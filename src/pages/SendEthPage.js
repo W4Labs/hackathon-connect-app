@@ -11,6 +11,7 @@ import * as React from 'react'
 import '../App.css';
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Web3Button } from '@web3modal/react'
+import { isContentEditable } from '@testing-library/user-event/dist/utils'
 
 const tele = window.Telegram.WebApp;
 
@@ -24,8 +25,11 @@ export function SendEthPage(){
         tele.ready();
         tele.expand();    
     });
-    
-    
+    useEffect(() => {
+        if(!isConnected){
+            navigate("/");
+        }
+    })
     const [searchParams, setSearchParams] = useSearchParams()
     const [toAddress, setToAddress] = React.useState(searchParams.get('toAddress') || '')
     //const [debouncedTo] = useDebounce(to, 500)
@@ -53,11 +57,7 @@ export function SendEthPage(){
     //     onSuccess: () => alert("success")
     // })
 
-    useEffect(() => {
-        if(!isConnected){
-            navigate("/home");
-        }
-    })
+    
 
     
 
