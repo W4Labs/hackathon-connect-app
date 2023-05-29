@@ -91,13 +91,15 @@ export function SendEthPage(){
         }
         
     }
-
-    tele.MainButton.setText("Finish").show().onClick(function(){
-        const set_hash = data?.hash
-        const dataToBot = JSON.stringify({hash: set_hash})
-        tele.sendData(dataToBot);
-        tele.close();
-      });
+    if(isSuccess){
+        tele.MainButton.setText("Finish").show().onClick(function(){
+            const set_hash = data?.hash
+            const dataToBot = JSON.stringify({hash_result: set_hash})
+            tele.sendData(dataToBot);
+            tele.close();
+          });
+    }
+    
     return(
         // <form
         //     onSubmit={(e) => {
