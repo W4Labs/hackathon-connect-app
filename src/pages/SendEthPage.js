@@ -46,28 +46,52 @@ export function SendEthPage(){
     // })
     const { config } = usePrepareSendTransaction({
         to: toAddress,
-        value: parseEther(amount), 
+        value: parseEther(amount),
+        onSuccess(data) {
+            console.log('Success from prepare', data)
+            console.log(data?.hash)
+        },
+        onError(error) {
+            console.log('Error from prepare', error)
+        } 
     })
-    const {sendTransaction} = useSendTransaction(config) 
-    // const { sendTransaction } = useSendTransaction({
-    //     request: {
-    //         to: "0x5aa330aF30e1d67B3C9182C61a5AdDD798c1b3E5",
-    //         value: (amount*1e18).toString()
+    
+    const {data, isLoadingSendTransaction, isSuccessSendTransaction, sendTransaction} = useSendTransaction(config) 
+    // const { data, isLoadingSendTransaction, isSuccessSendTransaction, sendTransaction } = useSendTransaction({
+    //     to: toAddress,
+    //     value: parseEther(amount),
+    //     onSuccess(data) {
+    //         console.log('Success from send', data)
+    //         console.log(data?.hash)
     //     },
-    //     onSuccess: () => alert("success")
+    //     onError(error) {
+    //         console.log('Error from send', error)
+    //     } 
     // })
-
+    const { isLoading, isSuccess } = useWaitForTransaction({
+        hash: data?.hash,
+        onSuccess(data) {
+            console.log('Success', data)
+            console.log(data?.hash)
+            const dataToBot = JSON.stringify({hash: data?.hash})
+            tele.sendData(dataToBot);
+            tele.close();
+        },
+        onError(error) {
+            console.log('Error', error)
+        }
+    })
+    
     
 
-    
-
-    console.log(toAddress)
-    console.log(amount)
-    console.log(parseEther(amount))
-    console.log(!sendTransaction)
     
     function runSendTransaction(){
-        sendTransaction?.()
+        try {
+            sendTransaction?.()
+        } catch (error) {
+            console.log("error from try catch me", error)
+        }
+        
     }
 
     return(
@@ -80,8 +104,18 @@ export function SendEthPage(){
         <div>
             <p>To: {toAddress}</p>
             <p>Amount: {amount} eth</p>
-            <button disabled={!amount} onClick={runSendTransaction}>Send</button>
+            <button disabled={!amount || !toAddress || !sendTransaction} onClick={runSendTransaction}>
+            {isLoading ? 'Sending...' : 'Send'}
+            </button>
             <Web3Button />
+            {isSuccess && (
+                <div>
+                Successfully sent {amount} ether to {toAddress}
+                <div>
+                    <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+                </div>
+                </div>
+            )}
         </div>
             
         // </form>
