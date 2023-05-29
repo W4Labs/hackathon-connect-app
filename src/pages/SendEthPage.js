@@ -17,7 +17,7 @@ const tele = window.Telegram.WebApp;
 
 
 
-export function Send(){
+export function SendEthPage(){
     const { address, isConnected, connector } = useAccount();
     const navigate = useNavigate();
     useEffect(() => {

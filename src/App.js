@@ -1,13 +1,13 @@
 import './App.css';
-import Connect from './pages/Connect'
+import ConnectHomePage from './pages/ConnectHomePage'
 import SendPage from './pages/SendPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Button, Web3Modal } from '@web3modal/react'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, polygon } from 'wagmi/chains'
-import { useAccount, useContract } from 'wagmi'
-import { useEffect } from 'react'
+//import { useAccount, useContract } from 'wagmi'
+//import { useEffect } from 'react'
 import './App.css';
 
 
@@ -38,8 +38,8 @@ function App() {
       <WagmiConfig config={wagmiConfig}>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Connect />} />
-          <Route path='/home' element={<Connect />} />
+          <Route index element={<ConnectHomePage />} />
+          <Route path='/home' element={<ConnectHomePage />} />
           <Route path="/send" element={<SendPage />} />
         </Routes>
       </BrowserRouter>

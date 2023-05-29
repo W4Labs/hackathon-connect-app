@@ -1,17 +1,17 @@
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import { useAccount } from 'wagmi'
  
 
 
 
 import React from 'react'
-import { Send } from './Send'
+import { SendEthPage } from './SendEthPage'
 
 export default function SendPage() {
     const { isConnected } = useAccount()
     if (isConnected){
         return (
             <div>
-                <Send />
+                <SendEthPage />
             </div>
           )
     }
