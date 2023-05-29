@@ -16,9 +16,13 @@ export default function SendPage() {
     const { isConnected } = useAccount()
     if (isConnected){
         return (
-            <div>
+            <div className="App">
+                <header className="App-header">
                 <SendEthPage />
+                </header>
+                
             </div>
+            
           )
     }
     

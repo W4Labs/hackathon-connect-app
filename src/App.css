@@ -28,6 +28,30 @@
   color: #61dafb;
 }
 
+.App-send-Button {
+  color: #ffff;
+  padding: 0px 15px 1px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #3396ff;
+  cursor: pointer;
+  display: inline;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: none;
+  font-size: large;
+  font-weight: 500;
+}
+
+.divCentered {
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

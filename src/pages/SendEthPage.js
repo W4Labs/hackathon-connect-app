@@ -107,12 +107,15 @@ export function SendEthPage(){
         //         // sendTransaction?.()
         //         }}
         // >
-        <div>
+        <div className='divCentered'>
             <p>To: {toAddress}</p>
             <p>Amount: {amount} eth</p>
-            <button disabled={!amount || !toAddress || !sendTransaction} onClick={runSendTransaction}>
-            {isLoading ? 'Sending...' : 'Send'}
-            </button>
+            <div className='divCentered'>
+                <button className= "App-send-Button" disabled={!amount || !toAddress || !sendTransaction} onClick={runSendTransaction}>
+                {isLoading ? 'Sending...' : 'Send'}
+                </button>
+                
+            </div>
             <Web3Button />
             {isSuccess && (
                 <div>
