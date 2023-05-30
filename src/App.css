@@ -6,7 +6,7 @@
     padding: 10px; /* adjust as needed */
     word-wrap: break-word; 
     overflow-wrap: break-word;
-    style.wordBreak = "break-all";
+    wordBreak = "break-all";
 }
 
 .App-logo {
