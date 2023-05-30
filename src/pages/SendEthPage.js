@@ -100,35 +100,31 @@ export function SendEthPage(){
           });
     }
     
-    return(
-        // <form
-        //     onSubmit={(e) => {
-        //         e.preventDefault()
-        //         // sendTransaction?.()
-        //         }}
-        // >
+    
+ return(
         <div className='divCentered'>
-            <p>To: {toAddress}</p>
-            <p>Amount: {amount} eth</p>
+            <p className="textWrapper">To: {toAddress}</p>
+            <p className="textWrapper">Amount: {amount} eth</p>
             <div className='divCentered'>
                 <button className= "App-send-Button" disabled={!amount || !toAddress || !sendTransaction} onClick={runSendTransaction}>
-                {isLoading ? 'Sending...' : 'Send'}
+                    {isLoading ? 'Sending...' : 'Send'}
                 </button>
-                
             </div>
             <Web3Button />
             {isSuccess && (
-                <div>
-                Successfully sent {amount} ether to {toAddress}
-                <div>
-                    <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
-                </div>
+                <div className="textWrapper">
+                    Successfully sent {amount} ether to {toAddress}
+                    <div>
+                        <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+                    </div>
                 </div>
             )}
         </div>
-            
-        // </form>
-        );
-    
-  
+    );
 }
+
+
+
+
+
+
