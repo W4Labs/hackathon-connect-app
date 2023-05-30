@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.textWrapper {
+    padding: 10px; /* adjust as needed */
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
