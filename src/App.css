@@ -4,6 +4,8 @@
 
 .textWrapper {
     padding: 10px; /* adjust as needed */
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
 }
 
 .App-logo {
