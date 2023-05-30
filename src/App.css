@@ -29,19 +29,21 @@
 }
 
 .App-send-Button {
-  color: #ffff;
-  padding: 0px 15px 1px;
-  height: 40px;
-  border-radius: 10px;
-  background-color: #3396ff;
-  cursor: pointer;
-  display: inline;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  border: none;
-  font-size: large;
-  font-weight: 500;
+    color: #ffff;
+    padding: 20px 30px; /* Increase padding */
+    font-size: 1.5em; /* Increase font size */
+    border-radius: 10px;
+    background-color: #3396ff;
+    cursor: pointer;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border: none;
+    font-weight: 500;
+    white-space: normal; /* Allow text wrapping */
+    text-align: center; /* Center the text */
+    width: 80%; /* Set a width that's suitable for mobile screens */
 }
 
 .divCentered {
