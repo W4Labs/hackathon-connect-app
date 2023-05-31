@@ -15,6 +15,7 @@ const CHAINS = [mainnet];
 
 const { publicClient } = configureChains(CHAINS, [w3mProvider({ projectId: PROJECT_ID })]);
 
+//Changed to version 2
 const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: w3mConnectors({
