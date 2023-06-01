@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 import React from "react";
-import { SendEthPage } from "./SendEthPage";
+import { SwapTokenPage } from "./SwapTokenPage";
 
-export default function SwapPage() {
+export default function SendPage() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isConnected) {
@@ -17,7 +17,7 @@ export default function SwapPage() {
     return (
       <div className="App">
         <header className="App-header">
-          <SendEthPage />
+          <SwapTokenPage />
         </header>
       </div>
     );
