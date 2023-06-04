@@ -1,1 +1,1 @@
-export const PROJECT_ID = process.ENV.PROJECT_ID;
+export const PROJECT_ID = process.env.PROJECT_ID;
