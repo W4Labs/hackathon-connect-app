@@ -110,7 +110,7 @@ export function SwapTokenPage() {
     try {
       const tx = await buildTxForApproveTradeWithRouter(
         fromTokenAddress,
-        ethers.MaxInt256,
+        ethers.constants.MaxUint256,
         chain?.id
       );
       setApproveTx(tx);

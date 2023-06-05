@@ -15,6 +15,10 @@ import "./App.css";
 
 // Import PROJECT_ID from constants.js
 import { PROJECT_ID } from "./constants";
+import AaveSupply from "./pages/AaveSupply";
+import AaveWithdraw from "./pages/AaveWithdraw";
+import AaveBorrow from "./pages/AaveBorrow";
+import AaveRepay from "./pages/AaveRepay";
 
 const CHAINS = [mainnet, arbitrum];
 
@@ -29,7 +33,7 @@ const wagmiConfig = createConfig({
     version: 2,
     chains: CHAINS,
     rpc: {
-      1: "https://mainnet.infura.io/v3/83110b298a9f45faa4b26602598ad2e5"
+      1: "https://mainnet.infura.io/v3/83110b298a9f45faa4b26602598ad2e5",
     },
   }),
   publicClient,
@@ -47,6 +51,10 @@ function App() {
             <Route path="/home" element={<ConnectHomePage />} />
             <Route path="/send" element={<SendPage />} />
             <Route path="/swap" element={<SwapPage />} />
+            <Route path="aave/supply" element={<AaveSupply />} />
+            <Route path="aave/withdraw" element={<AaveWithdraw />} />
+            <Route path="aave/borrow" element={<AaveBorrow />} />
+            <Route path="aave/repay" element={<AaveRepay />} />
           </Routes>
         </BrowserRouter>
       </WagmiConfig>
