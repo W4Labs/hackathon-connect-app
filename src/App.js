@@ -30,7 +30,7 @@ const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: w3mConnectors({
     projectId: PROJECT_ID,
-    version: 2,
+    version: 1,
     chains: CHAINS,
     rpc: {
       1: "https://mainnet.infura.io/v3/83110b298a9f45faa4b26602598ad2e5",
