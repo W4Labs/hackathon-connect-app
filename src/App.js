@@ -14,7 +14,7 @@ import SwapPage from "./pages/SwapPage";
 import "./App.css";
 
 // Import PROJECT_ID from constants.js
-import { PROJECT_ID } from "./constants";
+//import { PROJECT_ID } from "./constants";
 import AaveSupply from "./pages/AaveSupply";
 import AaveWithdraw from "./pages/AaveWithdraw";
 import AaveBorrow from "./pages/AaveBorrow";
