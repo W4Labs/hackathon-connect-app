@@ -21,7 +21,7 @@ import AaveBorrow from "./pages/AaveBorrow";
 import AaveRepay from "./pages/AaveRepay";
 
 const CHAINS = [mainnet, arbitrum];
-
+const PROJECT_ID = process.env.PROJECT_ID;
 console.log("Project id: ", PROJECT_ID);
 
 const { publicClient } = configureChains(CHAINS, [
