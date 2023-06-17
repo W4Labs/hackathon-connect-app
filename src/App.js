@@ -22,6 +22,8 @@ import AaveRepay from "./pages/AaveRepay";
 
 const CHAINS = [mainnet, arbitrum];
 
+console.log("Project id: ", PROJECT_ID);
+
 const { publicClient } = configureChains(CHAINS, [
   w3mProvider({ projectId: PROJECT_ID }),
 ]);
