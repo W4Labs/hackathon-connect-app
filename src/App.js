@@ -14,14 +14,14 @@ import SwapPage from "./pages/SwapPage";
 import "./App.css";
 
 // Import PROJECT_ID from constants.js
-//import { PROJECT_ID } from "./constants";
+import { PROJECT_ID } from "./constants";
 import AaveSupply from "./pages/AaveSupply";
 import AaveWithdraw from "./pages/AaveWithdraw";
 import AaveBorrow from "./pages/AaveBorrow";
 import AaveRepay from "./pages/AaveRepay";
 
 const CHAINS = [mainnet, arbitrum];
-const PROJECT_ID = process.env.PROJECT_ID;
+//const PROJECT_ID = process.env.PROJECT_ID;
 console.log("Project id: ", PROJECT_ID);
 
 const { publicClient } = configureChains(CHAINS, [
