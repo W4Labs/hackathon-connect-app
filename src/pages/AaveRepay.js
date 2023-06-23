@@ -66,7 +66,6 @@ export default function AaveRepay() {
 
   const { write: approveAave } = useContractWrite(approveAaveConfig);
 
-  //function repay(address asset, uint256 amount, address onBehalfOf, uint16 referralCode) external
   const { config: repayAaveConfig } = usePrepareContractWrite({
     address: poolAddress,
     abi: AavePoolABI,
@@ -78,7 +77,6 @@ export default function AaveRepay() {
     ...repayAaveConfig,
     onSuccess: (data) => {
       onRepaySuccess(data);
-      console.log(data);
     },
   });
 
@@ -88,7 +86,6 @@ export default function AaveRepay() {
   }, [address, signer]);
 
   const onRepaySuccess = (data) => {
-    console.log("Success repay to AAVE");
     setRepayCompleted(true);
     setRepayAaveHash(data);
   };

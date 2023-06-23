@@ -12,7 +12,6 @@ import ConnectHomePage from "./pages/ConnectHomePage";
 import SendPage from "./pages/SendPage";
 import SwapPage from "./pages/SwapPage";
 import "./App.css";
-
 // Import PROJECT_ID from constants.js
 import { PROJECT_ID } from "./constants";
 import AaveSupply from "./pages/AaveSupply";
