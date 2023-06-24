@@ -59,7 +59,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </WagmiConfig>
-      <Web3Modal projectId={PROJECT_ID} mobileWallets={[{ id: "MetaMask", name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} desktopWallets={[{ name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} ethereumClient={ethereumClient} />
+      <Web3Modal projectId={PROJECT_ID} themeMode="dark" mobileWallets={[{ id: "MetaMask", name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} desktopWallets={[{ name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} ethereumClient={ethereumClient} />
     </div>
   );
 }
