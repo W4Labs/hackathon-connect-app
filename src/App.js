@@ -31,7 +31,7 @@ const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: w3mConnectors({
     projectId: PROJECT_ID,
-    version: 1,
+    version: 2,
     chains: CHAINS,
     rpc: {
       1: "https://mainnet.infura.io/v3/83110b298a9f45faa4b26602598ad2e5",
@@ -59,7 +59,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </WagmiConfig>
-      <Web3Modal projectId={PROJECT_ID} ethereumClient={ethereumClient} />
+      <Web3Modal projectId={PROJECT_ID} mobileWallets={[{ id: "MetaMask", name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} desktopWallets={[{ name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} ethereumClient={ethereumClient} />
     </div>
   );
 }
