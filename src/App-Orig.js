@@ -23,7 +23,7 @@ const wagmiConfig = createConfig({
     autoConnect: true,
     connectors: w3mConnectors({
         projectId: "4b2367cdd661553089d9366b1dda20b8",
-        version: 1,
+        version: 2,
         chains
     }),
     publicClient
