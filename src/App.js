@@ -34,7 +34,7 @@ const wagmiConfig = createConfig({
     version: 2,
     chains: CHAINS,
     rpc: {
-      1: "https://mainnet.infura.io/v3/83110b298a9f45faa4b26602598ad2e5",
+      1: "https://eth-mainnet.g.alchemy.com/v2/yxRnRAhclYIAxN3DVf_KwaYa3oA1_y-n",
     },
   }),
   publicClient,
