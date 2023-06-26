@@ -42,7 +42,7 @@ const wagmiConfig = createConfig({
     // new InjectedConnector({ CHAINS }),
     w3mConnectors({
       projectId: PROJECT_ID,
-      version: 1,
+      version: 2,
       chains: CHAINS,
       rpc: {
         1: "https://eth-mainnet.g.alchemy.com/v2/yxRnRAhclYIAxN3DVf_KwaYa3oA1_y-n",
