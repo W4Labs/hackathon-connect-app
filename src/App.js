@@ -29,16 +29,42 @@ const { publicClient } = configureChains(CHAINS, [
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({
-    projectId: PROJECT_ID,
-    version: 1,
-    chains: CHAINS,
-    rpc: {
-      1: "https://eth-mainnet.g.alchemy.com/v2/yxRnRAhclYIAxN3DVf_KwaYa3oA1_y-n",
-    },
-  }),
+  // connectors: [
+  //   // new MetaMaskConnector({ CHAINS }),
+  //   new WalletConnectConnector({
+  //     CHAINS,
+  //     options: {
+  //       projectId: PROJECT_ID,
+  //     },
+  //   }),
+  // ],
+  connectors:
+    // new InjectedConnector({ CHAINS }),
+    w3mConnectors({
+      projectId: PROJECT_ID,
+      version: 2,
+      chains: CHAINS,
+      rpc: {
+        1: "https://eth-mainnet.g.alchemy.com/v2/yxRnRAhclYIAxN3DVf_KwaYa3oA1_y-n",
+      },
+    }),
   publicClient,
 });
+
+// const wagmiConfig = createConfig({
+//   autoConnect: true,
+//   connectors:
+//     // new InjectedConnector({ CHAINS }),
+//     w3mConnectors({
+//       projectId: PROJECT_ID,
+//       version: 1,
+//       chains: CHAINS,
+//       rpc: {
+//         1: "https://eth-mainnet.g.alchemy.com/v2/yxRnRAhclYIAxN3DVf_KwaYa3oA1_y-n",
+//       },
+//     }),
+//   publicClient,
+// });
 
 const ethereumClient = new EthereumClient(wagmiConfig, CHAINS);
 
@@ -59,7 +85,31 @@ function App() {
           </Routes>
         </BrowserRouter>
       </WagmiConfig>
-      <Web3Modal projectId={PROJECT_ID} themeMode="dark" mobileWallets={[{ id: "MetaMask", name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} desktopWallets={[{ name: 'Metamask', links: {native: "wc://metamask.app.link",  universal: "wc://metamask.app.link"} }]} ethereumClient={ethereumClient} />
+      <Web3Modal projectId={PROJECT_ID} ethereumClient={ethereumClient} />
+      {/* <Web3Modal
+        projectId={PROJECT_ID}
+        themeMode="dark"
+        mobileWallets={[
+          {
+            id: "MetaMask",
+            name: "Metamask",
+            links: {
+              native: "wc://metamask.app.link",
+              universal: "wc://metamask.app.link",
+            },
+          },
+        ]}
+        desktopWallets={[
+          {
+            name: "Metamask",
+            links: {
+              native: "wc://metamask.app.link",
+              universal: "wc://metamask.app.link",
+            },
+          },
+        ]}
+        ethereumClient={ethereumClient}
+      /> */}
     </div>
   );
 }

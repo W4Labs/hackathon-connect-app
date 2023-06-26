@@ -41,7 +41,6 @@ export default function ConnectHomePage() {
       </WagmiConfig>
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} /> */}
           <Web3Button />
-          <a href="https://metamask.app.link/">Open metamask</a>
         </header>
       </div>
     );
