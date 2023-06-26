@@ -1,8 +1,8 @@
 //import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
-import { useWeb3Modal, Web3Button, Web3Modal } from "@web3modal/react";
+import { Web3Button } from "@web3modal/react";
 //import { configureChains, createConfig, WagmiConfig } from 'wagmi'
 //import { arbitrum, mainnet, polygon } from 'wagmi/chains'
-import { useAccount, useContract } from "wagmi";
+import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import "../App.css";
 
@@ -27,7 +27,6 @@ const tele = window.Telegram.WebApp;
 
 export default function ConnectHomePage() {
   const { address, isConnected } = useAccount();
-  const { open } = useWeb3Modal();
   useEffect(() => {
     tele.ready();
     tele.expand();
@@ -42,7 +41,6 @@ export default function ConnectHomePage() {
       </WagmiConfig>
         <Web3Modal projectId={projectId} ethereumClient={ethereumClient} /> */}
           <Web3Button />
-          <button onClick={() => open()}>Connect</button>
         </header>
       </div>
     );
