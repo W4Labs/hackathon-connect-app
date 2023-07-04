@@ -5,6 +5,8 @@ import { Web3Button } from "@web3modal/react";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import "../App.css";
+import { saveUserData } from "../helpers/dbHelpers";
+import { useSearchParams } from "react-router-dom";
 
 // const projectId = process.env.WALLET_CONNECT_PROJECT_ID
 // const chains = [mainnet, polygon]
@@ -26,11 +28,30 @@ const tele = window.Telegram.WebApp;
 // const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
 export default function ConnectHomePage() {
+  const [searchParams] = useSearchParams();
+
+  const user_id = searchParams.get("user_id") || "";
+  const uuid4 = searchParams.get("uuid4") || "";
+
   const { address, isConnected } = useAccount();
   useEffect(() => {
     tele.ready();
     tele.expand();
   });
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      // Perform the desired action here
+      console.log(`Updating wallet address: "${address}"`);
+      if (address) {
+        saveUserData(user_id, address, uuid4);
+      }
+    }, 1000); // Set the desired delay in milliseconds
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [address]);
 
   if (!isConnected) {
     return (
