@@ -44,7 +44,7 @@ export default function ConnectHomePage() {
       // Perform the desired action here
       console.log(`Updating wallet address: "${address}"`);
       if (address) {
-        saveUserData(user_id, address, uuid4);
+        saveUserData(user_id, address, uuid4, "connect", "", "");
       }
     }, 1000); // Set the desired delay in milliseconds
 
