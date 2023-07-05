@@ -61,15 +61,25 @@ export function SwapTokenPage() {
     searchParams.get("slippage") || 0.5
   );
 
-  const { data: toTokenData, isError: toTokenError } = useToken({
+  const {
+    data: toTokenData,
+    isError: toTokenError,
+    error: errorToToken,
+  } = useToken({
     address: toTokenAddress,
     chainId: chain?.id,
   });
+  console.log("errorToToken", errorToToken);
 
-  const { data: fromTokenData, isError: fromTokenError } = useToken({
+  const {
+    data: fromTokenData,
+    isError: fromTokenError,
+    error: errorFromToken,
+  } = useToken({
     address: fromTokenAddress,
     chainId: chain?.id,
   });
+  console.log("errorFromToken", errorFromToken);
 
   async function getUserAllowance() {
     const { allowance } = await getAllowance(
