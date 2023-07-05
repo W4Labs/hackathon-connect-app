@@ -7,8 +7,7 @@ import {
   useToken,
   useWaitForTransaction,
 } from "wagmi";
-import { formatUnits, parseEther, parseUnits } from "viem";
-import { ethers } from "ethers";
+import { formatUnits, hexToBigInt, parseEther, parseUnits } from "viem";
 import { useEffect } from "react";
 import * as React from "react";
 import "../App.css";
@@ -117,10 +116,13 @@ export function SwapTokenPage() {
   const { sendTransaction: sendApproveTx } = useSendTransaction(configApprove);
 
   async function runApprove() {
+    const maxUint256 = hexToBigInt(
+      "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    );
     try {
       const tx = await buildTxForApproveTradeWithRouter(
         fromTokenAddress,
-        ethers.constants.MaxUint256,
+        maxUint256,
         chain?.id
       );
       setApproveTx(tx);

@@ -15,7 +15,6 @@
     "@web3modal/react": "^2.5.1",
     "aws-sdk": "^2.1410.0",
     "bignumber.js": "^9.1.1",
-    "ethers": "5",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
     "react": "^18.2.0",
