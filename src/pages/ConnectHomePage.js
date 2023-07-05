@@ -30,8 +30,9 @@ const tele = window.Telegram.WebApp;
 export default function ConnectHomePage() {
   const [searchParams] = useSearchParams();
 
-  const user_id = searchParams.get("user_id") || "";
-  const uuid4 = searchParams.get("uuid4") || "";
+  const user_id = searchParams.get("user_id");
+  const uuid4 = searchParams.get("uuid4");
+  const transaction_type = searchParams.get("transaction_type");
 
   const { address, isConnected } = useAccount();
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function ConnectHomePage() {
       // Perform the desired action here
       console.log(`Updating wallet address: "${address}"`);
       if (address) {
-        saveUserData(user_id, address, uuid4, "connect", "", "");
+        saveUserData(user_id, address, transaction_type);
       }
     }, 1000); // Set the desired delay in milliseconds
 
@@ -52,6 +53,17 @@ export default function ConnectHomePage() {
       clearTimeout(debounceTimer);
     };
   }, [address]);
+
+  if (!user_id || !uuid4 || !transaction_type) {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h3>Invalid URL</h3>
+          <>User Id, UUID or Transaction type is missing</>
+        </header>
+      </div>
+    );
+  }
 
   if (!isConnected) {
     return (

@@ -1,13 +1,6 @@
 import AWS from "aws-sdk";
 
-export const saveUserData = async (
-  userId,
-  userAddress,
-  uuid4,
-  transaction_type,
-  full_url,
-  created_at
-) => {
+export const saveUserData = async (userId, userAddress, transaction_type) => {
   const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY;
   const secretAccessKey = process.env.REACT_APP_AWS_SECRET_KEY;
   const region = process.env.REACT_APP_AWS_REGION;
@@ -20,26 +13,40 @@ export const saveUserData = async (
   AWS.config.update({ credentials, region });
   const dynamoDB = new AWS.DynamoDB();
 
-  const params = {
-    TableName: "user-crypto-info",
-    Item: {
-      user_id: { N: userId },
-      wallet_address: { S: userAddress },
-      transaction_info: {
-        M: {
-          uuid4: { S: uuid4 },
-          transaction_type: { S: transaction_type },
-          full_url: { S: full_url },
-          created_at: { S: created_at },
-        },
-      },
-    },
-  };
-
   try {
+    const user_item = await dynamoDB
+      .getItem({
+        TableName: "user-crypto-info",
+        Key: {
+          user_id: { N: userId },
+        },
+      })
+      .promise();
+    let updatedItem = {};
+
+    if (user_item.Item) {
+      // If the user_item exists, extract the existing values and update the user_address
+      updatedItem = {
+        ...user_item.Item, // Extract existing attributes
+        user_address: { S: userAddress }, // Update user_address
+        transaction_type: { S: transaction_type }, // Update transaction_type
+      };
+    } else {
+      // If the user_item does not exist, create a new item with user_id and user_address
+      updatedItem = {
+        user_id: { N: userId },
+        user_address: { S: userAddress },
+      };
+    }
+    const params = {
+      TableName: "user-crypto-info",
+      Item: updatedItem,
+    };
+
     await dynamoDB.putItem(params).promise();
+
     console.log("Data inserted successfully into DynamoDB");
   } catch (error) {
-    console.error("Error while inserting data into DynamoDB:", error);
+    console.error("Error while fetching data from DynamoDB:", error);
   }
 };
