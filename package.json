@@ -24,7 +24,7 @@
     "react-scripts": "5.0.1",
     "reflect-metadata": "^0.1.13",
     "use-debounce": "^9.0.4",
-    "viem": "^0.3.37",
+    "viem": "1.2.9",
     "wagmi": "^1.0.8",
     "web-vitals": "^2.1.4"
   },
