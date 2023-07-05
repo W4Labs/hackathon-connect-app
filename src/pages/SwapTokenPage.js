@@ -94,7 +94,10 @@ export function SwapTokenPage() {
   }, [address]);
   useEffect(() => {
     const amountBN = parseUnits(amount, fromTokenData?.decimals);
-    const allowanceBN = parseUnits(allowance, fromTokenData?.decimals);
+    const allowanceBN = parseUnits(
+      allowance.toString(),
+      fromTokenData?.decimals
+    );
     if (allowanceBN > amountBN) {
       setNeedApprove(false);
     }
