@@ -45,6 +45,7 @@ export function SwapTokenPage() {
   const [outputAmount, setOutputAmount] = React.useState(0);
   const [fromLogoUri, setFromLogoUri] = React.useState(null);
   const [toLogoUri, setToLogoUri] = React.useState(null);
+  const [needApprove, setNeedApprove] = React.useState(false);
   const [approveInProgress, setApproveInProgress] = React.useState(false);
 
   const fromTokenAddress = searchParams.get("fromTokenAddress") || "";
@@ -69,7 +70,7 @@ export function SwapTokenPage() {
   const pubClient = usePublicClient();
 
   const amountBN = parseUnits(amount, fromTokenData?.decimals);
-  let needApprove = allowance < amountBN;
+  // let needApprove = allowance < amountBN;
 
   const getAllowance1Inch = async () => {
     if (spender1InchAddress) {
@@ -100,7 +101,7 @@ export function SwapTokenPage() {
       onSuccess(data) {
         console.log("approve success", data);
         setApproveInProgress(false);
-        needApprove = false;
+        setNeedApprove(false);
       },
       onError(error) {
         console.log("approve error", error);
@@ -170,8 +171,17 @@ export function SwapTokenPage() {
   }
 
   useEffect(() => {
-    getAllowance1Inch();
     getQuote();
+  }, []);
+
+  useEffect(() => {
+    // let needApprove = allowance < amountBN;
+    if (allowance < amountBN) {
+      setNeedApprove(true);
+    } else {
+      setNeedApprove(false);
+    }
+    getAllowance1Inch();
     runApprove();
     runSwap();
   }, [allowance]);
