@@ -1,3 +1,5 @@
+export const spender1InchAddress = "0x1111111254eeb25477b68fb85ed929f73a960582";
+
 function apiRequestUrl(methodName, queryParams, chainId) {
   const apiBaseUrl = "https://api.1inch.io/v5.0/" + chainId;
   return (
@@ -51,11 +53,17 @@ export async function buildTxForApproveTradeWithRouter(
 }
 
 export async function quote(fromTokenAddress, toTokenAddress, amount, chainId) {
+  console.log("quote", fromTokenAddress, toTokenAddress, amount, chainId);
   const url = apiRequestUrl(
     "/quote",
     { fromTokenAddress, toTokenAddress, amount },
     chainId
   );
+
+  return fetch(url).then((res) => res.json());
+}
+export async function get1InchSpender(chainId) {
+  const url = apiRequestUrl("/approve/spender", {}, chainId);
 
   return fetch(url).then((res) => res.json());
 }

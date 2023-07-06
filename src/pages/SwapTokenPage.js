@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import {
+  erc20ABI,
   useAccount,
   useNetwork,
   usePrepareSendTransaction,
@@ -7,23 +9,24 @@ import {
   useToken,
   useWaitForTransaction,
 } from "wagmi";
-import { formatUnits, hexToBigInt, parseEther, parseUnits } from "viem";
+import { formatUnits, hexToBigInt, parseUnits } from "viem";
 import { useEffect } from "react";
 import * as React from "react";
 import "../App.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Web3Button } from "@web3modal/react";
 import {
-  getAllowance,
   buildTxForApproveTradeWithRouter,
   buildTxForSwap,
   quote,
+  spender1InchAddress,
 } from "../helpers/swapHelpers";
+import { arbitrum } from "viem/chains";
 
 const tele = window.Telegram.WebApp;
 
 export function SwapTokenPage() {
-  const { address, isConnected } = useAccount();
+  const { address: userAddress, isConnected } = useAccount();
   const { chain } = useNetwork();
   const navigate = useNavigate();
   useEffect(() => {
@@ -35,23 +38,16 @@ export function SwapTokenPage() {
       navigate("/");
     }
   });
+
+  const [searchParams] = useSearchParams();
+
   const [allowance, setAllowance] = React.useState(0);
-  const [needApprove, setNeedApprove] = React.useState(true);
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = React.useState(false);
-
   const [outputAmount, setOutputAmount] = React.useState(0);
   const [fromLogoUri, setFromLogoUri] = React.useState(null);
   const [toLogoUri, setToLogoUri] = React.useState(null);
+  const [approveInProgress, setApproveInProgress] = React.useState(false);
 
-  // const [fromTokenAddress, setFromTokenAddress] = React.useState(
-  //   searchParams.get("fromTokenAddress") || ""
-  // );
   const fromTokenAddress = searchParams.get("fromTokenAddress") || "";
-  // const [toTokenAddress, setToTokenAddress] = React.useState(
-  //   searchParams.get("toTokenAddress") || ""
-  // );
   const toTokenAddress = searchParams.get("toTokenAddress") || "";
   // const [amount, setAmount] = React.useState(searchParams.get("amount") || "");
   const amount = searchParams.get("amount") || "";
@@ -60,64 +56,57 @@ export function SwapTokenPage() {
     searchParams.get("slippage") || 0.5
   );
 
-  const {
-    data: toTokenData,
-    isError: toTokenError,
-    error: errorToToken,
-  } = useToken({
+  const { data: toTokenData } = useToken({
     address: toTokenAddress,
     chainId: chain?.id,
   });
-  console.log("errorToToken", errorToToken);
 
-  const {
-    data: fromTokenData,
-    isError: fromTokenError,
-    error: errorFromToken,
-  } = useToken({
+  const { data: fromTokenData } = useToken({
     address: fromTokenAddress,
     chainId: chain?.id,
   });
-  console.log("errorFromToken", errorFromToken);
 
-  async function getUserAllowance() {
-    const { allowance } = await getAllowance(
-      fromTokenAddress,
-      address,
-      chain?.id
-    );
-    setAllowance(allowance);
-  }
+  const pubClient = usePublicClient();
 
-  useEffect(() => {
-    getUserAllowance();
-  }, [address]);
-  useEffect(() => {
-    const amountBN = parseUnits(amount, fromTokenData?.decimals);
-    const allowanceBN = parseUnits(
-      allowance.toString(),
-      fromTokenData?.decimals
-    );
-    if (allowanceBN > amountBN) {
-      setNeedApprove(false);
+  const amountBN = parseUnits(amount, fromTokenData?.decimals);
+  let needApprove = allowance < amountBN;
+
+  const getAllowance1Inch = async () => {
+    if (spender1InchAddress) {
+      const publicClient = pubClient;
+      const currentAllowance = await publicClient.readContract({
+        address: fromTokenAddress,
+        abi: erc20ABI,
+        functionName: "allowance",
+        args: [userAddress, spender1InchAddress],
+      });
+      setAllowance(currentAllowance);
     }
-  }, [amount, allowance]);
+  };
 
   const [approveTx, setApproveTx] = React.useState(null);
   const [swapTx, setSwapTx] = React.useState(null);
-  const [isLoadingApprove, setIsLoadingApprove] = React.useState(false);
-  // const [isLoadingSwap, setIsLoadingSwap] = React.useState(false);
 
   const { config: configApprove } = usePrepareSendTransaction({
     to: approveTx?.to,
     data: approveTx?.data,
     gasPrice: approveTx?.gasPrice,
     value: approveTx?.value,
-    onSuccess(data) {},
-    onError(error) {},
   });
 
-  const { sendTransaction: sendApproveTx } = useSendTransaction(configApprove);
+  const { data: approveData, sendTransaction: sendApproveTx } =
+    useSendTransaction({
+      ...configApprove,
+      onSuccess(data) {
+        console.log("approve success", data);
+        setApproveInProgress(false);
+        needApprove = false;
+      },
+      onError(error) {
+        console.log("approve error", error);
+        setApproveInProgress(false);
+      },
+    });
 
   async function runApprove() {
     const maxUint256 = hexToBigInt(
@@ -153,7 +142,7 @@ export function SwapTokenPage() {
   async function runSwap() {
     try {
       const tx = await buildTxForSwap(
-        address,
+        userAddress,
         fromTokenAddress,
         toTokenAddress,
         parseUnits(amount, fromTokenData?.decimals),
@@ -166,6 +155,7 @@ export function SwapTokenPage() {
 
   async function getQuote() {
     const amountBN = parseUnits(amount, fromTokenData?.decimals);
+    console.log("amountBN", amountBN);
 
     const res = await quote(
       fromTokenAddress,
@@ -180,10 +170,11 @@ export function SwapTokenPage() {
   }
 
   useEffect(() => {
+    getAllowance1Inch();
     getQuote();
     runApprove();
     runSwap();
-  }, []);
+  }, [allowance]);
 
   ///!todo: change after finished
   const data = { hash: swapWaitData?.transactionHash };
@@ -199,6 +190,16 @@ export function SwapTokenPage() {
         tele.close();
       });
   }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Perform your action or update state here
+      getAllowance1Inch();
+    }, 5000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="divCentered">
@@ -219,15 +220,18 @@ export function SwapTokenPage() {
             disabled={!amount || !toTokenAddress || !fromTokenAddress}
             onClick={async () => {
               try {
-                setIsLoadingApprove(true);
+                console.log("approve", approveInProgress);
+                setApproveInProgress(true);
+                console.log("approve", approveInProgress);
                 sendApproveTx?.();
-                setIsLoadingApprove(false);
               } catch (error) {
-                setIsLoadingApprove(false);
+                console.log("approve error", error);
+                setApproveInProgress(false);
               }
             }}
           >
-            {isLoadingApprove ? "Approving" : "Approve"}
+            {needApprove && !approveInProgress ? "Approve" : ""}
+            {approveInProgress ? "Approving..." : ""}
           </button>
         )}
         {!needApprove && (
