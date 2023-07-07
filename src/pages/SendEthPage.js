@@ -5,7 +5,6 @@ import {
   erc20ABI,
   useContractWrite,
 } from "wagmi";
-import { useDebounce } from "use-debounce";
 import { parseEther, parseUnits } from "viem";
 import { useEffect } from "react";
 import {
@@ -17,12 +16,11 @@ import * as React from "react";
 import "../App.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Web3Button } from "@web3modal/react";
-import { isContentEditable } from "@testing-library/user-event/dist/utils";
 
 const tele = window.Telegram.WebApp;
 
 export function SendEthPage() {
-  const { address, isConnected, connector } = useAccount();
+  const { isConnected } = useAccount();
   const navigate = useNavigate();
   useEffect(() => {
     tele.ready();
@@ -46,7 +44,7 @@ export function SendEthPage() {
   );
 
   //useTOken
-  const { data: tokenData, isError: tokenError } = useToken({
+  const { data: tokenData } = useToken({
     address: tokenAddress,
   });
   //   console.log(tokenData);
@@ -61,7 +59,7 @@ export function SendEthPage() {
     args: [toAddress, parseUnits(amount, tokenData?.decimals)],
   });
   //   console.log(transferPrepareSuccess);
-  const { data: transferData, write } = useContractWrite(transferConfig);
+  const { write } = useContractWrite(transferConfig);
   // const { config } = usePrepareSendTransaction({
   //     request: {
   //     to,
@@ -97,23 +95,7 @@ export function SendEthPage() {
     },
   });
 
-  const {
-    data,
-    isLoadingSendTransaction,
-    isSuccessSendTransaction,
-    sendTransaction,
-  } = useSendTransaction(config);
-  // const { data, isLoadingSendTransaction, isSuccessSendTransaction, sendTransaction } = useSendTransaction({
-  //     to: toAddress,
-  //     value: parseEther(amount),
-  //     onSuccess(data) {
-  //         console.log('Success from send', data)
-  //         console.log(data?.hash)
-  //     },
-  //     onError(error) {
-  //         console.log('Error from send', error)
-  //     }
-  // })
+  const { data, sendTransaction } = useSendTransaction(config);
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess(data) {

@@ -84,7 +84,6 @@ export default function AaveWithdraw() {
             <div className="divCentered">
               <button
                 className="App-send-Button"
-                // disabled={!amount || !toTokenAddress || !fromTokenAddress}
                 onClick={() => {
                   console.log("withdrawAave");
                   withdrawAave?.();
